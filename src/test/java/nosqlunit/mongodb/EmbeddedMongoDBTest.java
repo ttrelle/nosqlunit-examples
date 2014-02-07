@@ -63,7 +63,6 @@ public class EmbeddedMongoDBTest {
 		repo.insert(42, "2nd order");
 		
 		// then: should match data
-
 	}
 	
 	private OrderRepository createOrderRepository() {

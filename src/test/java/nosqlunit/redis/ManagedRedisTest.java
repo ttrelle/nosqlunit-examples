@@ -15,6 +15,8 @@ import com.lordofthejars.nosqlunit.redis.ManagedRedis;
 
 /**
  * This test demonstrate how to use NoSQLUnit for Redis in managed mode.
+ * <p/>
+ * Does not work on Windows OS.
  * 
  * @author Tobias Trelle
  */

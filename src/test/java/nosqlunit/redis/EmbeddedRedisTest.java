@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import redis.clients.jedis.Jedis;
 
+import com.lordofthejars.nosqlunit.annotation.ShouldMatchDataSet;
 import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
 import com.lordofthejars.nosqlunit.core.LoadStrategyEnum;
 import com.lordofthejars.nosqlunit.redis.EmbeddedRedis;
@@ -30,14 +31,33 @@ public class EmbeddedRedisTest {
 	public RedisRule redisRule = newRedisRule().defaultEmbeddedRedis();
 	
 	@Test
-	@UsingDataSet(locations="data.json" ,loadStrategy = LoadStrategyEnum.INSERT)
+	@UsingDataSet(locations="keyvalue.json" ,loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
 	public void should_find_string() {
-		Jedis jedis = new Jedis("localhost");
-		String value;
+		// given
+		KeyValueRepository repo = new KeyValueRepository( getJedisInstance() );
 		
-		value = jedis.get("hello");
+		// when
+		String value = repo.getValue("hello");
 		
+		// then
 		assertThat( value, is("redis") );
+	}
+
+	@Test
+	@UsingDataSet(loadStrategy = LoadStrategyEnum.DELETE_ALL)
+	@ShouldMatchDataSet(location="keyvalue.json")
+	public void should_insert_string() {
+		// given
+		KeyValueRepository repo = new KeyValueRepository( getJedisInstance() );
+		
+		// when
+		repo.setValue("hello", "redis");
+		
+		// then: should match data
+	}
+	
+	private Jedis getJedisInstance() {
+		return (Jedis)redisRule.getDatabaseOperation().connectionManager();
 	}
 	
 }
