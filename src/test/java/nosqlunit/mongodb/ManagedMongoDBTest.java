@@ -1,6 +1,6 @@
 package nosqlunit.mongodb;
 
-import static com.lordofthejars.nosqlunit.mongodb.InMemoryMongoDb.InMemoryMongoRuleBuilder.newInMemoryMongoDbRule;
+import static com.lordofthejars.nosqlunit.mongodb.ManagedMongoDb.MongoServerRuleBuilder.newManagedMongoDbRule;
 import static com.lordofthejars.nosqlunit.mongodb.MongoDbRule.MongoDbRuleBuilder.newMongoDbRule;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -15,27 +15,29 @@ import org.junit.Test;
 import com.lordofthejars.nosqlunit.annotation.ShouldMatchDataSet;
 import com.lordofthejars.nosqlunit.annotation.UsingDataSet;
 import com.lordofthejars.nosqlunit.core.LoadStrategyEnum;
-import com.lordofthejars.nosqlunit.mongodb.InMemoryMongoDb;
+import com.lordofthejars.nosqlunit.mongodb.ManagedMongoDb;
 import com.lordofthejars.nosqlunit.mongodb.MongoDbRule;
 import com.mongodb.DB;
 import com.mongodb.DBObject;
 
 /**
- * Example test for NoSQLUnit for MongoDB using embedded mode (based on the Fongo mock implementation).
+ * Example test for NoSQLUnit for MongoDB using managed mode (spawning a single mongod process).
  * 
  * @author Tobias Trelle
  */
-public class EmbeddedMongoDBTest {
+public class ManagedMongoDBTest {
 
+	private static final String MONGODB_HOME = System.getProperty("mongodb.home", "/opt/mongodb-2.4.8/bin/mongod");
+	
 	private static final String DB_NAME = "test";
 	
 	// Manage the mongod instance
 	@ClassRule
-	public static InMemoryMongoDb mongod = newInMemoryMongoDbRule().build();	
+	public static ManagedMongoDb mongod = newManagedMongoDbRule().mongodPath(MONGODB_HOME).build();	
 	
 	// Manage connection
 	@Rule
-	public MongoDbRule mongoRule = newMongoDbRule().defaultEmbeddedMongoDb(DB_NAME);
+	public MongoDbRule mongoRule = newMongoDbRule().defaultManagedMongoDb(DB_NAME);
 	
 	@Test
 	@UsingDataSet(locations = "orders.json", loadStrategy = LoadStrategyEnum.INSERT)
