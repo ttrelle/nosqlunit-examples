@@ -3,7 +3,7 @@ package nosqlunit.redis;
 import redis.clients.jedis.Jedis;
 
 /**
- * Simple repository abstraction.
+ * Simple key/value repository abstraction.
  * 
  * @author Tobias Trelle
  */

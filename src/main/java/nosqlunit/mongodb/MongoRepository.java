@@ -9,6 +9,11 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
+/**
+ * A simple base class for MongoDB based repositories.
+ * 
+ * @author Tobias trelle
+ */
 public class MongoRepository {
 
 	private DBCollection collection;
