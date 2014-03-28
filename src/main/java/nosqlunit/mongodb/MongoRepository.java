@@ -30,12 +30,20 @@ public class MongoRepository {
 		final List<DBObject> result = new ArrayList<DBObject>();
 		final DBCursor crsr;
 		
-		crsr = collection.find( (DBObject)JSON.parse(criteria) );
+		crsr = collection.find( parse(criteria) );
 		while ( crsr.hasNext() ) {
 			result.add(crsr.next());
 		}
 		
 		return result;
+	}
+	
+	public int update(String query, String update) {
+		return getCollection().update( parse(query), parse(update) ).getN();
+	}
+	
+	protected static DBObject parse(String json) {
+		return (DBObject)JSON.parse(json);
 	}
 	
 	protected DBCollection getCollection() {
