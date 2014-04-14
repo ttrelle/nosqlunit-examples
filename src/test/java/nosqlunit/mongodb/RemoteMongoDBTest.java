@@ -26,19 +26,22 @@ public class RemoteMongoDBTest {
 
 	private static final String DB_NAME = "test";
 	
-	@Rule
+	@Rule // use already running "remote" instance
 	public MongoDbRule mongoRule = new MongoDbRule(
 			mongoDb().databaseName(DB_NAME).host("localhost").port(27017) .build()
 	);	
+	
+	/** Unit under test. */
+	private OrderRepository repository;		
 	
 	@Test
 	@UsingDataSet(locations = "orders.json", loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
 	public void should_find_all_orders() {
 		// given
-		OrderRepository repo = createOrderRepository();
+		repository = createOrderRepository();
 		
 		// when
-		List<DBObject> orders = repo.findAll();
+		List<DBObject> orders = repository.findAll();
 		
 		// then
 		assertThat(orders, notNullValue());
@@ -50,11 +53,11 @@ public class RemoteMongoDBTest {
 	@ShouldMatchDataSet(location = "orders.json")
 	public void should_insert_orders() {
 		// given
-		OrderRepository repo = createOrderRepository();
+		repository = createOrderRepository();
 		
 		// when
-		repo.insert(4711, "1st order");
-		repo.insert(42, "2nd order");
+		repository.insert(4711, "1st order");
+		repository.insert(42, "2nd order");
 		
 		// then: should match data
 	}

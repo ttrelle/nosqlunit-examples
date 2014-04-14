@@ -24,14 +24,17 @@ public class RemoteRedisTest {
 	@ClassRule
     public static RedisRule redisRule = new RedisRule(newRemoteRedisConfiguration().host("localhost").port(6379).build());
 	
+	/** Unit under test. */
+	private KeyValueRepository repository;
+	
 	@Test
 	@UsingDataSet(locations="keyvalue.json" ,loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
 	public void should_find_string() {
 		// given
-		KeyValueRepository repo = new KeyValueRepository( getJedisInstance() );
+		repository = new KeyValueRepository( getJedisInstance() );
 		
 		// when
-		String value = repo.getValue("hello");
+		String value = repository.getValue("hello");
 		
 		// then
 		assertThat( value, is("redis") );
@@ -42,10 +45,10 @@ public class RemoteRedisTest {
 	@ShouldMatchDataSet(location="keyvalue.json")
 	public void should_insert_string() {
 		// given
-		KeyValueRepository repo = new KeyValueRepository( getJedisInstance() );
+		repository = new KeyValueRepository( getJedisInstance() );
 		
 		// when
-		repo.setValue("hello", "redis");
+		repository.setValue("hello", "redis");
 		
 		// then: should match data
 	}

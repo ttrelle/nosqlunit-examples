@@ -30,8 +30,7 @@ public class EmbeddedMongoDBTest {
 
 	protected static final String DB_NAME = "test";
 	
-	// Manage the mongod instance
-	@ClassRule
+	@ClassRule // Manage the mongod instance
 	public static InMemoryMongoDb mongod = newInMemoryMongoDbRule().build();	
 	
 	// Manage connection
@@ -39,10 +38,10 @@ public class EmbeddedMongoDBTest {
 	public MongoDbRule mongoRule = newMongoDbRule().defaultEmbeddedMongoDb(DB_NAME);
 	
 	/** Unit under test. */
-	private OrderRepository repo;
+	private OrderRepository repository;
 	
 	@Before public void setUp() {
-		repo = new OrderRepository(getDatabase(), "orders");
+		repository = new OrderRepository(getDatabase(), "orders");
 	}
 	
 	@Test
@@ -51,7 +50,7 @@ public class EmbeddedMongoDBTest {
 		// given: data set orders.json
 		
 		// when
-		List<DBObject> orders = repo.findAll();
+		List<DBObject> orders = repository.findAll();
 		
 		// then
 		assertThat( orders, notNullValue() );
@@ -65,7 +64,7 @@ public class EmbeddedMongoDBTest {
 		// given: data set orders.json
 		
 		// when
-		int updated = repo.update("{type: 42}", "{$set: {desc: \"something else\"}}");
+		int updated = repository.update("{type: 42}", "{$set: {desc: \"something else\"}}");
 		
 		// then
 		assertThat( updated, is(1) );
@@ -78,8 +77,8 @@ public class EmbeddedMongoDBTest {
 		// given: empty collection
 		
 		// when
-		repo.insert(4711, "1st order");
-		repo.insert(42, "2nd order");
+		repository.insert(4711, "1st order");
+		repository.insert(42, "2nd order");
 		
 		// then: should match data
 	}

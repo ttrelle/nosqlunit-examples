@@ -24,24 +24,27 @@ public class ManagedRedisTest {
 
 	private static final String REDIS_HOME = "/opt/redis-2.6";
 	
-	/*
-    static {
-        System.setProperty("REDIS_HOME", "\\opt\\redis-2.6");
-    }
-    */	
-	
 	@ClassRule
     public static ManagedRedis redisRule = newManagedRedisRule().redisPath(REDIS_HOME).build();
 	
+	/** Unit under test. */
+	private KeyValueRepository repository;
+	
 	@Test
-	@UsingDataSet(locations="data.json" ,loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
+	@UsingDataSet(locations="keyvalue.json" ,loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
 	public void should_find_string() {
-		Jedis jedis = new Jedis("localhost");
-		String value;
+		// given
+		repository = new KeyValueRepository( getJedisInstance() );
 		
-		value = jedis.get("hello");
+		// when
+		String value = repository.getValue("hello");
 		
+		// then
 		assertThat( value, is("redis") );
 	}
+	
+	private Jedis getJedisInstance() {
+		return new Jedis("localhost");
+	}	
 	
 }

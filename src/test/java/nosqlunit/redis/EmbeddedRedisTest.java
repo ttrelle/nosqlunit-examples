@@ -30,31 +30,35 @@ public class EmbeddedRedisTest {
 	@Rule
 	public RedisRule redisRule = newRedisRule().defaultEmbeddedRedis();
 	
-	@Test
-	@UsingDataSet(locations="keyvalue.json" ,loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
-	public void should_find_string() {
-		// given
-		KeyValueRepository repo = new KeyValueRepository( getJedisInstance() );
-		
-		// when
-		String value = repo.getValue("hello");
-		
-		// then
-		assertThat( value, is("redis") );
-	}
-
+	/** Unit under test. */
+	private KeyValueRepository repository;
+	
 	@Test
 	@UsingDataSet(loadStrategy = LoadStrategyEnum.DELETE_ALL)
 	@ShouldMatchDataSet(location="keyvalue.json")
 	public void should_insert_string() {
 		// given
-		KeyValueRepository repo = new KeyValueRepository( getJedisInstance() );
+		repository = new KeyValueRepository( getJedisInstance() );
 		
 		// when
-		repo.setValue("hello", "redis");
+		repository.setValue("hello", "redis");
 		
 		// then: should match data
 	}
+	
+	@Test
+	@UsingDataSet(locations="keyvalue.json" ,loadStrategy = LoadStrategyEnum.CLEAN_INSERT)
+	public void should_find_string() {
+		// given
+		repository = new KeyValueRepository( getJedisInstance() );
+		
+		// when
+		String value = repository.getValue("hello");
+		
+		// then
+		assertThat( value, is("redis") );
+	}
+
 	
 	private Jedis getJedisInstance() {
 		return (Jedis)redisRule.getDatabaseOperation().connectionManager();

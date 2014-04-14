@@ -31,22 +31,23 @@ public class ManagedMongoDBTest {
 	
 	private static final String DB_NAME = "test";
 	
-	// Manage the mongod instance
-	@ClassRule
+	@ClassRule // Manage the mongod instance
 	public static ManagedMongoDb mongod = newManagedMongoDbRule().mongodPath(MONGODB_HOME).build();	
 	
-	// Manage connection
-	@Rule
+	@Rule // Manage connection
 	public MongoDbRule mongoRule = newMongoDbRule().defaultManagedMongoDb(DB_NAME);
+	
+	/** Unit under test. */
+	private OrderRepository repository;	
 	
 	@Test
 	@UsingDataSet(locations = "orders.json", loadStrategy = LoadStrategyEnum.INSERT)
 	public void should_find_all_orders() {
 		// given
-		OrderRepository repo = createOrderRepository();
+		repository = createOrderRepository();
 		
 		// when
-		List<DBObject> orders = repo.findAll();
+		List<DBObject> orders = repository.findAll();
 		
 		// then
 		assertThat(orders, notNullValue());
@@ -58,11 +59,11 @@ public class ManagedMongoDBTest {
 	@ShouldMatchDataSet(location = "orders.json")
 	public void should_insert_orders() {
 		// given
-		OrderRepository repo = createOrderRepository();
+		repository = createOrderRepository();
 		
 		// when
-		repo.insert(4711, "1st order");
-		repo.insert(42, "2nd order");
+		repository.insert(4711, "1st order");
+		repository.insert(42, "2nd order");
 		
 		// then: should match data
 	}
