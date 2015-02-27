@@ -4,7 +4,7 @@
 
 	<groupId>org.trellee</groupId>
 	<artifactId>nosqlunit-examples</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>NoSQLUnit Examples</name>
@@ -12,6 +12,9 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<nosql.unit.version>0.8.1</nosql.unit.version>
+		<mongodb.driver.version>2.13.0</mongodb.driver.version>
+		<redis.driver.version>2.6.2</redis.driver.version>
 	</properties>
 
 	<dependencies>
@@ -20,14 +23,14 @@
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
-			<version>2.11.4</version>
+			<version>${mongodb.driver.version}</version>
 		</dependency>
 
 		<!-- Redis client -->
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
-			<version>2.0.0</version>
+			<version>${redis.driver.version}</version>
 		</dependency>
 
 		<dependency>
@@ -48,21 +51,21 @@
 		<dependency>
 			<groupId>com.lordofthejars</groupId>
 			<artifactId>nosqlunit-core</artifactId>
-			<version>0.7.9</version>
+			<version>${nosql.unit.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.lordofthejars</groupId>
 			<artifactId>nosqlunit-redis</artifactId>
-			<version>0.7.9</version>
+			<version>${nosql.unit.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.lordofthejars</groupId>
 			<artifactId>nosqlunit-mongodb</artifactId>
-			<version>0.7.9</version>
+			<version>${nosql.unit.version}</version>
 			<scope>test</scope>
 		</dependency>
 
