@@ -12,8 +12,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<nosql.unit.version>0.8.1</nosql.unit.version>
-		<mongodb.driver.version>2.13.0</mongodb.driver.version>
+		<nosql.unit.version>0.10.0</nosql.unit.version>
+		<mongodb.driver.version>3.2.2</mongodb.driver.version>
 		<redis.driver.version>2.6.2</redis.driver.version>
 	</properties>
 

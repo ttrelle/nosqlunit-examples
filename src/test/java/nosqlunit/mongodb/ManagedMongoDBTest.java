@@ -27,7 +27,7 @@ import com.mongodb.DBObject;
  */
 public class ManagedMongoDBTest {
 
-	private static final String MONGODB_HOME = System.getProperty("mongodb.home", "/opt/mongodb-2.4.8");
+	private static final String MONGODB_HOME = System.getProperty("mongodb.home", "/opt/mongodb-3.2.9");
 	
 	private static final String DB_NAME = "test";
 	
